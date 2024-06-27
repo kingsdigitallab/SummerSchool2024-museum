@@ -4,6 +4,7 @@
   "description": "A simple blog, set up with Eleventy.",
   "scripts": {
     "serve": "eleventy --serve",
+    "start": "eleventy --serve",
     "build": "NODE_ENV=production eleventy"
   },
   "dependencies": {
