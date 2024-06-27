@@ -1,0 +1,102 @@
+
+/* ----------------------   UI Styles   ---------------------------*/
+
+/* Mobile first sizes */
+
+.mainUI {
+    border: 0px;
+    position: fixed;
+    top: 0px;
+    width: 99%;
+    height: 99%;
+    z-index: 1;
+    pointer-events: none; /* allow click-through in transparent areas */
+}
+
+
+.regionUI {
+    border: 0px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    pointer-events: auto;
+}
+
+.uiLink {
+    border: 0px !important;
+}
+
+.infoUI {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    pointer-events: auto;
+}
+
+.buttonUI {
+    border: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: auto;
+    filter: drop-shadow(0px 0px 20px white);
+}
+
+
+.joystick-container {
+    bottom: 10px;
+    left: 10px;
+    width: 25%;
+    height: auto;
+}
+
+
+/* Breakpoints to scale the HTML UI for different devices */
+
+/* Tablets */
+@media screen and (min-width: 600px) {
+    .joystick-container {
+        bottom: 10px;
+        left: 10px;
+        width: 20%;
+        height: auto;
+    }
+
+    .tutorial-window {
+        width: 60%;
+        height: auto;
+        left: 20%;
+        position: absolute;
+        top: 10%;
+    }
+    .transcript p {
+    font-size: 1.5rem;
+
+}
+
+}
+
+/* Desktop */
+@media screen and (min-width: 992px) {
+    .joystick-container {
+        bottom: 10px;
+        left: 10px;
+        width: 10%;
+        height: auto;
+    }
+
+    .tutorial-window, .centreUI {
+        width: 60%;
+        height: 80%;
+        left: 20%;
+        position: absolute;
+        top: 5%;
+    }
+
+    .transcript p {
+        font-size: 1.5rem;
+
+    }
+}
+
+

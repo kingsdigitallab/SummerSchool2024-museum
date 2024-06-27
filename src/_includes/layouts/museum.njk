@@ -1,0 +1,251 @@
+---
+layout: layouts/base.njk
+templateClass: tmpl-home
+---
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="/public/assets/css/museum.css" />
+{% endblock %}
+
+{% block extrajs %}
+<!-- A-Frame -->
+<script src="{{ '/public/assets/js/joystick/joystick.js' | url  }}"></script>
+<script src="{{ '/public/assets/js/aframe.js' | url }}"></script>
+<script src="{{ '/public/assets/js/aframe-extras.min.js' | url }}"></script>
+<!-- ---------------------- ->
+
+<!-- Navmesh https://github.com/AdaRoseCannon/aframe-xr-boilerplate -->
+<script src="{{ '/public/assets/js/simple-navmesh-constraint.js' | url }}"></script>
+
+
+{% endblock %}
+
+{% block aframe %}
+<script>
+/**
+ * Prompts the cursor to change its shape when intersecting with an object with this component
+ */
+AFRAME.registerComponent('exhibit-animator', {
+
+    schema: {
+        hoverColor: {type: 'string', default: 'red'},
+        reverse:{type: 'boolean',default:false}
+    },
+
+    init: function () {
+        var data = this.data;
+        var el = this.el;  // <a-box>
+        this.reverse = this.data.reverse; // Copy over default value so we can toggle it
+        this.defaultColor = el.getAttribute('material').color;
+        this.el.addEventListener('mouseenter', this.onMouseEnter.bind(this));
+        this.el.addEventListener('mouseleave', this.onMouseLeave.bind(this));
+        this.el.addEventListener('click', this.onClick.bind(this));
+        // Add animation to our object
+        this.el.setAttribute("animation__spin", "property: rotation; to: 0 360 0; loop: false; dur: 3000; autoplay:false");
+    },
+
+
+    /*
+        When gaze intersects, update the cursor with the new icon
+     */
+    onMouseEnter: function (event) {
+        // Defined in schema above
+        this.el.setAttribute('color', this.data.hoverColor);
+    },
+
+    onMouseLeave: function (event) {
+        this.el.setAttribute('color', this.defaultColor);
+    },
+
+    onClick: function (evt) {
+        // Get our animation component
+        spinAnim = this.el.components["animation__spin"];
+
+        // Restart it
+        spinAnim.animation.restart()
+    }
+
+});
+
+// need to run javascript code after a-scene entities and components are loaded
+AFRAME.registerComponent('screen-controls',
+    {
+        schema: {
+            cameraRigId: {type: 'string', default: "cameraRig"},
+            cameraId: {type: 'string', default: "head"},
+            cursorId: {type: 'string', default: "cursor"},
+            deadZoneOffset: {type: 'number', default: 0.1},
+            KeyUp: {type: 'string', default: "KeyW"},
+            KeyDown: {type: 'string', default: "KeyS"},
+            KeyLeft: {type: 'string', default: "KeyA"},
+            KeyRight: {type: 'string', default: "KeyD"},
+            screenControlsClass: {type: 'string', default: "screen-controls"},
+
+        },
+        init: function () {
+            // rig.components['keyboard-controls'].localKeys["KeyW"] = false;
+            //this.component = document.getElementById().components["movement-controls"];
+            this.keyboardControl = document.getElementById(this.data.cameraRigId).components['keyboard-controls'];
+            this.joystick1 = new Joystick("stick1", 64, 8);
+            this.joystickXActive = false;
+            this.joystickYActive = false;
+            this.cursor = document.getElementById(this.data.cursorId);
+            console.log("controls initialized");
+        },
+
+        /* Show/hide the screen controls like joystick etc. */
+        toggleScreenControls: function (toggle) {
+            let controls = document.getElementsByClassName(this.data.screenControlsClass);
+
+            for (let i = 0; i < controls.length; i++) {
+                if (!toggle) {
+                    controls[i].classList.add('hidden');
+                } else {
+                    controls[i].classList.remove('hidden');
+                }
+
+            }
+        },
+
+        toggleRayCaster: function (toggle) {
+            document.getElementById("cursor").setAttribute("raycaster", "enabled", toggle);
+        },
+
+
+        disableMovement: function () {
+            console.log("disabled");
+            this.toggleMovement(false);
+        },
+
+        enableMovement: function () {
+            console.log("enabled");
+            this.toggleMovement(true);
+        },
+
+        toggleMovement: function (toggle) {
+            document.getElementById(this.data.cameraRigId).setAttribute('movement-controls', 'enabled', toggle);
+            document.getElementById(this.data.cameraId).setAttribute('look-controls', 'enabled', toggle);
+            // Toggle cursor
+            if (this.cursor) {
+                this.cursor.object3D.visible = toggle;
+            }
+            // Toggle UI
+            this.toggleScreenControls(toggle);
+
+        },
+
+
+        tick: function (time, deltaTime) {
+
+            //if (this.joystick1.value.x != 0){
+            //console.log(this.joystick1.value);
+            //}
+
+            // X axis (left/right)
+            if (this.joystick1.value.x < this.data.deadZoneOffset * -1) {
+                this.keyboardControl.localKeys[this.data.KeyLeft] = true;
+                this.joystickXActive = true;
+            } else if (this.joystick1.value.x > this.data.deadZoneOffset) {
+                this.keyboardControl.localKeys[this.data.KeyRight] = true;
+                this.joystickXActive = true;
+            } else if (this.joystickXActive) {
+
+                delete this.keyboardControl.localKeys[this.data.KeyLeft];
+                delete this.keyboardControl.localKeys[this.data.KeyRight];
+                this.joystickXActive = false;
+            }
+
+            // Y Axis (up/down) maps to Z in 3D
+            if (this.joystick1.value.y < this.data.deadZoneOffset * -1) {
+                this.keyboardControl.localKeys[this.data.KeyUp] = true;
+                this.joystickYActive = true;
+            } else if (this.joystick1.value.y > this.data.deadZoneOffset) {
+                this.keyboardControl.localKeys[this.data.KeyDown] = true;
+                this.joystickYActive = true;
+            } else if (this.joystickYActive) {
+
+                this.joystickYActive = false;
+                delete this.keyboardControl.localKeys[this.data.KeyDown];
+                delete this.keyboardControl.localKeys[this.data.KeyUp];
+            }
+
+
+        }
+    });
+</script>
+
+
+
+<a-scene id="museum-scene" screen-controls >
+        <!-- Global stuff -->
+        <a-assets>
+            <a-mixin id="scale" scale="1 1 1"></a-mixin>
+            <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
+            <a-asset-item id="room_glb" src="{{ '/public/assets/models/museum_space_template.glb' | url }}"></a-asset-item>
+            <a-asset-item id="navmesh_glb" src="{{ '/public/assets/models/museum_space_template_nav_mesh.glb' | url }}"></a-asset-item>
+
+
+            <!-- <audio id="S_verty_bird1" src="{{ '/public/assets/stemcellcity/verty/bird1.mp3' | url }}"></audio>
+            <audio id="S_verty_bird2" src="{{ '/public/assets/stemcellcity/verty/bird2.mp3' | url }}"></audio>
+            <audio id="S_verty_bird3" src="{{ '/public/assets/stemcellcity/verty/bird3.mp3' | url }}"></audio>
+                <audio id="S_verty_bird4" src="{{ '/public/assets/stemcellcity/verty/bird4.mp3' | url }}" ></audio>
+                <audio id="S_verty_bird5" src="{{ '/public/assets/stemcellcity/verty/bird5.mp3' | url }}"
+                preload="auto"></audio>
+            -->
+        </a-assets>
+
+<!--
+Main camera and rig
+This contains the movement controls, a camera (serving as the head) attached to the rig which moves.
+
+A detailpanel and cursor are attached to the camera, as well as a modal fade background.
+
+-->
+
+<a-entity
+      id="cameraRig"
+      simple-navmesh-constraint="navmesh:.navmesh;fall:0.5;height:0;exclude:.navmesh-hole;"
+      movement-controls="controls:keyboard,gamepad; speed:0.25;camera:#head;"
+      position="{{ camera.position.x }} {{ camera.position.y }} {{ camera.position.z }}"
+      rotation="{{ camera.rotation.x }} {{ camera.rotation.y }} {{ camera.rotation.z }}" >
+      <!-- camera -->
+
+      <a-entity id="head"
+        camera="near:0.01;"
+        look-controls="pointerLockEnabled: false"
+        position="0 {{ camera.height }} 0">
+        <a-cursor
+        raycaster="far: 10; objects: .clickable"
+        animation__mouseenter_scale="property: scale; startEvents: mouseenter; easing: easeInCubic; dur: 500; from: 1 1 1; to: 2 2 2"
+             animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+        ></a-cursor>
+        </a-entity>
+  </a-entity>
+
+
+<!-- Navmesh -->
+
+<!--<a-entity id="navmesh1" class="navmesh" visible="true" color="green"
+geometry="primitive: plane; height: 16; width: 11" position="-4.20 1.6 6.432" rotation="-90 90 0"></a-entity>
+<a-entity id="navmesh2" class="navmesh" visible="" color="green" geometry="primitive: plane; height: 7.76; width: 4.84" position="-8.3064 1.63 -1.43948" rotation="-90 90 0"></a-entity>
+<a-plane id="navmesh-hole-1" visible="" class="navmesh-hole" rotation="-90 0 0" width="1.5" height="0.6" position="-2.90832 1.62996 3.72314" color="red" geometry="width: 3.1; height: 2" scale="" material=""></a-plane>
+<a-plane id="navmesh-hole-2" visible="" class="navmesh-hole" rotation="-90 0 0" width="1.5" height="0.6" position="2.56052 1.62996 9.55147" color="red" geometry="width: 2; height: 6" scale="" material=""></a-plane>
+<a-plane id="navmesh-hole-3" visible="" class="navmesh-hole" rotation="-90 0 0" width="1.5" height="0.6" position="-9.27246 1.63 3.66722" color="red" geometry="width: 2.3; height: 2" scale="" material=""></a-plane>
+<a-plane id="navmesh-hole-4" visible="" class="navmesh-hole" rotation="-90 0 0" width="1.5" height="0.6" position="-9.19205 1.63 -0.28509" color="red" geometry="width: 1.8; height: 2" scale="" material=""></a-plane>
+-->
+
+<a-box exhibit-animator class="clickable" position="-2.90832 3.5 3.72314" rotation="0 0 0"  color="#4CC3D9">
+      </a-box>
+
+<a-entity id="room" scale="1 1 1" position="0 0 0" gltf-model="#room_glb"></a-entity>
+<a-entity id="navmesh" class="navmesh" scale="1 1 1" position="0 0 0" gltf-model="#navmesh_glb" visible="false"></a-entity>
+
+<a-plane src="#groundTexture" rotation="-90 0 0" width="50" height="50"></a-plane>
+
+</a-scene>
+{% endblock %}
+
+<div class="wrapper">
+  <div class="content">
+    {{ content | safe }}
+  </div>
+</div>
