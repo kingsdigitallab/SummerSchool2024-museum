@@ -17,9 +17,39 @@
   </head>
   <body style="margin : 0px; overflow: hidden;">
 
+<div class="mainUI" id="uiDiv" oncontextmenu="return false;">
 
+	<!-- top-left -->
+	<div class="regionUI screen-controls" style="top: 0px; left: 10px;"  oncontextmenu="return false;">
+    </div>
+
+	<!-- top-right -->
+	<div class="infoUI screen-controls" style="top: 5px; right: 15px;">
+	</div>
+
+	<!-- centre -->
+<div></div>
+
+
+	<!-- bottom-left -->
+	<div class="regionUI joystick-container">
+		<div class="buttonUI screen-controls" style="width: 100%; opacity:0.80 ">
+			<img src="{{ '/public/assets/js/joystick/images/joystick-base.png' | url }}"/>
+			<div id="stick1" style="position: absolute; left:25%; width: 50%; top: 25%;">
+			<img style="width: 100%;" src="{{ '/public/assets/js/joystick/images/joystick-red.png' | url }}"/>
+			</div>
+		</div>
+		<div id="ui_bottom_left" class="buttonUI" style="max-width:100%; opacity:0.80;">
+
+		</div>
+	</div>
+
+	<!-- bottom-right -->
+</div>
 
   <main>
+    {% block aframe %}
+    {% endblock %}
     {# Page or post content will appear here #}
   
     {{ content | safe }}
