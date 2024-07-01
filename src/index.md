@@ -22,11 +22,12 @@ Interaction examples are on the <a-box> (floating cube)
 * Box will change colour when observed.
 * Clicking/touching while the cursor is on the cube will cause it to spin (an A-frame animation)
 
+
 ### Libraries used:
 
 * Aframe and Aframe-extras
-* Navigation Mesh library from https://github.com/AdaRoseCannon/aframe-xr-boilerplate
-* Visual joystick from Aframe-examples.
+* Navigation Mesh library from [aframe-xr-boilerplate](https://github.com/AdaRoseCannon/aframe-xr-boilerplate)
+* Visual joystick from [Aframe-examples](https://github.com/stemkoski/A-Frame-Examples).
 
 ### Getting started
 
