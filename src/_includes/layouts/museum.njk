@@ -184,13 +184,7 @@ AFRAME.registerComponent('screen-controls',
             <a-asset-item id="navmesh_glb" src="{{ '/public/assets/models/museum_space_template_nav_mesh.glb' | url }}"></a-asset-item>
 
 
-            <!-- <audio id="S_verty_bird1" src="{{ '/public/assets/stemcellcity/verty/bird1.mp3' | url }}"></audio>
-            <audio id="S_verty_bird2" src="{{ '/public/assets/stemcellcity/verty/bird2.mp3' | url }}"></audio>
-            <audio id="S_verty_bird3" src="{{ '/public/assets/stemcellcity/verty/bird3.mp3' | url }}"></audio>
-                <audio id="S_verty_bird4" src="{{ '/public/assets/stemcellcity/verty/bird4.mp3' | url }}" ></audio>
-                <audio id="S_verty_bird5" src="{{ '/public/assets/stemcellcity/verty/bird5.mp3' | url }}"
-                preload="auto"></audio>
-            -->
+
         </a-assets>
 
 <!--
@@ -224,7 +218,9 @@ A detailpanel and cursor are attached to the camera, as well as a modal fade bac
 
 <!-- Navmesh -->
 
-<!--<a-entity id="navmesh1" class="navmesh" visible="true" color="green"
+<!--
+Navmesh can also be done via custom shape elements as below, with holes in the mesh defined by other meshes
+<a-entity id="navmesh1" class="navmesh" visible="true" color="green"
 geometry="primitive: plane; height: 16; width: 11" position="-4.20 1.6 6.432" rotation="-90 90 0"></a-entity>
 <a-entity id="navmesh2" class="navmesh" visible="" color="green" geometry="primitive: plane; height: 7.76; width: 4.84" position="-8.3064 1.63 -1.43948" rotation="-90 90 0"></a-entity>
 <a-plane id="navmesh-hole-1" visible="" class="navmesh-hole" rotation="-90 0 0" width="1.5" height="0.6" position="-2.90832 1.62996 3.72314" color="red" geometry="width: 3.1; height: 2" scale="" material=""></a-plane>
@@ -237,6 +233,8 @@ geometry="primitive: plane; height: 16; width: 11" position="-4.20 1.6 6.432" ro
       </a-box>
 
 <a-entity id="room" scale="1 1 1" position="0 0 0" gltf-model="#room_glb"></a-entity>
+
+<!-- This was made in blender and gives a navigation map for where we can move. -->
 <a-entity id="navmesh" class="navmesh" scale="1 1 1" position="0 0 0" gltf-model="#navmesh_glb" visible="false"></a-entity>
 
 <a-plane src="#groundTexture" rotation="-90 0 0" width="50" height="50"></a-plane>
