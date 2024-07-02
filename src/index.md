@@ -10,6 +10,7 @@ layout: layouts/home.njk
 
 ## Example 1
 ## [Museum Virtual Tour](museum/example1)
+### tamplate: museum.njk
 
 This is a quick A-Frame example, creating a virtual tour for our museum activity and showing off a few of the features
 of [A-Frame](https://aframe.io/).  We've made it with Glitch's 11ty template.
@@ -40,7 +41,12 @@ Interaction examples are on the <a-box> (floating cube)
  
 ## Example 2 
 ## [AR Example](museum/example2)
+### template: mindar.njk
+There are a few image tracking solutions for A-frame/Three.js.  
+This example is made with [MindAR](https://hiukim.github.io/mind-ar-js-doc/) which also supports face tracking.  
+It uses the [tractor](https://sketchfab.com/3d-models/old-tractor-ferguson-te20-604cb70b362846ba8a3e835bff65ae7b) made by [Fredrik Johanson](https://sketchfab.com/kird3rf)
 
-There are a few image tracking solutions for A-frame/Three.js.  This example, based on a proof of concept made during the Glow
-project, is made with [MindAR](https://hiukim.github.io/mind-ar-js-doc/) which also supports face tracking.
+Use the [Tractor image target](/public/assets/mindar/image-target.jpg) either printed out or on a screen.  
+If you want to use your own image, run it through the [image processor](https://hiukim.github.io/mind-ar-js-doc/quick-start/compile) to create a .mind file, 
+then change the imageTargetSrc attribute in the a-scene in the template.  To change the model, you can change the path in the a-asset element or add your own.
 
