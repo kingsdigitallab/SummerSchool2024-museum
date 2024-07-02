@@ -12,7 +12,7 @@ layout: layouts/home.njk
 ## [Museum Virtual Tour](museum/example1)
 
 This is a quick A-Frame example, creating a virtual tour for our museum activity and showing off a few of the features
-of A-Frame.  We've made it with Glitch's 11ty template.
+of [A-Frame](https://aframe.io/).  We've made it with Glitch's 11ty template.
 
 On desktop this can be controlled via the WASD keyboard controls with mouselook. On a mobile device look is tilt and joystick for movement.
 
@@ -25,20 +25,22 @@ Interaction examples are on the <a-box> (floating cube)
 
 ### Libraries used:
 
-* Aframe and Aframe-extras
+* [A-Frame](https://aframe.io/) 
 * Navigation Mesh library from [aframe-xr-boilerplate](https://github.com/AdaRoseCannon/aframe-xr-boilerplate)
 * Visual joystick from [Aframe-examples](https://github.com/stemkoski/A-Frame-Examples).
 
-### Getting started
+
+### Getting started (and things to do)
 
 - First, remix this Glitch to make one of your own.
 - You can edit this directly in browser, or clone the git repo of your new glitch, and run it locally with 11ty and node
+- Add your own models and exhibit them in the space.  Look at our test cube for ideas about what to add to the component.
+- There are only default lights in the scene.  Try turning them off and adding your own: [docs](https://aframe.io/docs/1.6.0/components/light.html)
+- You can also add [audio](https://aframe.io/docs/1.6.0/components/sound.html) as well. 
  
 ## Example 2 
 ## [AR Example](museum/example2)
 
-A quick adaptation from the [Aframe Example](https://aframe.io/blog/arjs3/) showing image tracking.  The library
-also has marker and geo tracking, see the documentation for more examples.
-
-There are a few image tracking solutions for A-frame/Three.js.  Another is [MindAR](https://hiukim.github.io/mind-ar-js-doc/) which also supports face tracking.
+There are a few image tracking solutions for A-frame/Three.js.  This example, based on a proof of concept made during the Glow
+project, is made with [MindAR](https://hiukim.github.io/mind-ar-js-doc/) which also supports face tracking.
 

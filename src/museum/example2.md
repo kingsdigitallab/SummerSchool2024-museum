@@ -1,4 +1,4 @@
 ---
-layout: layouts/arexample.njk
+layout: layouts/mindar.njk
 ---
 

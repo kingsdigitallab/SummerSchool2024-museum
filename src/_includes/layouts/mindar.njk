@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+
+  </head>
+  <body>
+    <a-scene mindar-image="filterMinCF:0.000001; beta: 0.00001;  imageTargetSrc: /public/assets/mindar/tractor.mind;"
+        vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
+         <a-assets>
+        <a-asset-item id="tractor_glb" src="/public/assets/models/tractor_merge_actions.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+<!--
+ <a-entity id="animal_hummingbird" scale="0.2 0.2 0.2" class="clickable" position="-0.5 -0.5 0.1"
+                  gltf-model="url(/public/awichas/animals/hummingbird.glb)">
+            </a-entity>
+-->
+
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-entity id="room" scale="1 1 1" position="0 0 0.1" gltf-model="#tractor_glb"></a-entity>
+
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
